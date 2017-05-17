@@ -33,7 +33,7 @@ public class playerBehavior : MonoBehaviour
     // ground checker variables     
     public LayerMask groundLayer;
     public Transform groundChecker;
-    private bool isOnGround = false;
+    public bool isOnGround = false;
     private Rigidbody2D mRB;
     private float groundCheckerRadius = 1f;
 
