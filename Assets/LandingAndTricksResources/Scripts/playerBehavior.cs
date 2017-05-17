@@ -89,7 +89,27 @@ public class playerBehavior : MonoBehaviour
             {
                 HeroState = State.Crash;
                 LocalDestroy();
-            }                
+            }
+
+            //checks if player is above a grindable object
+            Debug.Log(rayCastLeft.grindable);
+            if (rayCastLeft.grindable)
+            {
+                Debug.Log("above rail");
+                if (Input.GetAxis("Vertical") < 0)
+                {
+                    isAboveRail = true;
+                    gb.UpdateScore(2);
+                    float turnSpeed = 100f;
+                    float newX = transform.position.x + 0.5f;
+                    Vector3 targetVector = rayCastLeft.gTransform.right;
+                    float angle = Mathf.Atan2(targetVector.y, targetVector.x) * Mathf.Rad2Deg;
+                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed * Time.deltaTime);
+                    transform.position = new Vector3(newX, rayCastLeft.railY, 0f);
+                }
+            }
+            else
+                isAboveRail = false;
 
             // prevents character from move faster than the max speed;
             if (mRB.velocity.magnitude >= maxSpeed)
@@ -104,14 +124,14 @@ public class playerBehavior : MonoBehaviour
                 // mRB.AddTorque(Input.GetAxis("Horizontal") * -rotationSpeed);  different rotation method feels different
             }
 
-            /*
-            if (isAboveRail)
+            // makes the players stay parallel to the ground
+            if (isOnGround && !jumped)
             {
-                gb.UpdateScore(2);
-                if (Input.GetAxis("Vertical") < 0)
-                    mRB.AddForce(transform.right * grindSpeed);
+                float turnSpeed = 2f;
+                Vector3 targetVector = (rayCastRight.point - rayCastLeft.point).normalized;
+                float angle = Mathf.Atan2(targetVector.y, targetVector.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed * Time.deltaTime);
             }
-            */
 
             // apply speed boost for x amount of seconds
             if (boost && trickComplete)
@@ -119,7 +139,7 @@ public class playerBehavior : MonoBehaviour
                 speedBoostTime -= Time.deltaTime;
                 if (speedBoostTime > 0f)
                 {
-                    mRB.AddForce(Vector3.Normalize(transform.right) * 5 * speedMultiplier);
+                    mRB.AddForce(Vector3.Normalize(transform.right) * 50 * speedMultiplier);
                     gb.updateTimer(2f, speedBoostTime);
                 }
                 else
@@ -236,44 +256,8 @@ public class playerBehavior : MonoBehaviour
                 HeroState = State.Crash;
             }
 
-            Vector3 targetVector = (rayCastRight.point - rayCastLeft.point).normalized;
-            Quaternion toRotation = Quaternion.LookRotation(targetVector, Vector3.up);
-            float maxAngleDelta = 15f;
-
-            // rotates the player to be parallel to the ground
-            transform.rotation = mRB.velocity.x > 0 ? Quaternion.RotateTowards(transform.rotation, toRotation, maxAngleDelta)
-                : Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(-targetVector, Vector3.up), maxAngleDelta);
-
             mRB.AddForce((rayCastRight.point - rayCastLeft.point) * AddedSpeed);
         }
-        #endregion
-
-
-        #region Hazard
-
-        if (other.gameObject.CompareTag("Hazard"))
-        {
-            mRB.AddForce(Vector3.Normalize(rayCastRight.point - rayCastLeft.point) * -20f);
-        }
-
-        #endregion
-
-        if(other.gameObject.CompareTag("Upgrade"))
-        {
-            mRB.AddForce(Vector3.Normalize(transform.right) * 20f);
-        }
-
-        #region rail trigger
-        /*
-        if (other.gameObject.CompareTag("GrindObject"))
-        {
-            isAboveRail = true;
-            if (Input.GetAxis("Vertical") >= 0)
-                LocalDestroy();
-        }
-        else
-            isAboveRail = false;
-            */
         #endregion
     }
 
