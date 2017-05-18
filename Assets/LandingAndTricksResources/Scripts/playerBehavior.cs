@@ -21,6 +21,7 @@ public class playerBehavior : MonoBehaviour
     private bool jumped = true;
     private bool boost = false;
     private bool isAboveRail = false;
+    private bool attachedToRail = false;
     private bool trickComplete = false;
     private float initRotation;
     private Vector3 initPos;
@@ -109,19 +110,20 @@ public class playerBehavior : MonoBehaviour
             {
                 if (Input.GetAxis("Vertical") < 0)
                 {
+                    attachedToRail = true;
                     isAboveRail = true;
-                    gb.UpdateScore(2);
-                    float turnSpeed = 10f;
-                    float newX = transform.position.x + 0.5f;
-                    Vector3 targetVector = rayCastLeft.gTransform.right;
-                    float angle = Mathf.Atan2(targetVector.y, targetVector.x) * Mathf.Rad2Deg;
-                    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed * Time.deltaTime);
-                    Vector3 destination = new Vector3(newX, rayCastLeft.railY + 5f, 0f);
-                    transform.position = Vector3.Lerp(transform.position, destination, 10f * Time.deltaTime);
                 }
             }
             else
+            {
                 isAboveRail = false;
+                attachedToRail = false;
+            }
+
+            if (attachedToRail)
+            {
+                PlayerAttachToRail();
+            }
 
             // prevents character from move faster than the max speed;
             if (mRB.velocity.magnitude >= maxSpeed)
@@ -142,7 +144,7 @@ public class playerBehavior : MonoBehaviour
                 float turnSpeed = 2f;
                 Vector3 targetVector = (rayCastRight.point - rayCastLeft.point).normalized;
                 float angle = Mathf.Atan2(targetVector.y, targetVector.x) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed * Time.fixedDeltaTime);
             }
 
             // apply speed boost for x amount of seconds
@@ -170,7 +172,6 @@ public class playerBehavior : MonoBehaviour
                 gb.UpdateSpeedMulText("Boost X " + speedMultiplier);
 
             if (jumped)
-//            if (!isOnGround)
             {
                 CheckForTricks();
             }
@@ -280,6 +281,32 @@ public class playerBehavior : MonoBehaviour
             }
         }
         #endregion
+    }
+
+    void PlayerJump()
+    {
+        initRotation = mRB.rotation;
+        isOnGround = false;
+        jumped = true;
+        mRB.AddForce(new Vector2(0, jumpHeight));
+        gm.GetComponent<GlobalBehavior>().UpdateLandingText("Landing: In Air");
+    }
+
+    void PlayerAttachToRail()
+    {
+        gb.UpdateScore(2);
+        float turnSpeed = 10f;
+        float newX = transform.position.x + 0.5f;
+        Vector3 targetVector = rayCastLeft.gTransform.right;
+        float angle = Mathf.Atan2(targetVector.y, targetVector.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed * Time.deltaTime);
+        Vector3 destination = new Vector3(newX, rayCastLeft.railY + gameObject.GetComponent<Collider2D>().bounds.size.y / 2, 0f);
+        transform.position = Vector3.Lerp(transform.position, destination, 15f * Time.deltaTime);
+        if (Input.GetAxis("Jump") > 1)
+        {
+            attachedToRail = false;
+            PlayerJump();
+        }
     }
 
     void BoostPlayer(float boostMul)
