@@ -12,7 +12,7 @@ public class playerBehavior : MonoBehaviour
     #region global variables
     // player variables
     public const float maxSpeed = 100f;
-    public const float jumpHeight = 1000f;
+    public const float jumpHeight = 800f;
     public const float rotationSpeed = 200f;
     public const float grindSpeed = 50;
     public float speedBoostTime = 2f; // the duration the speed boost is applied for
@@ -76,6 +76,7 @@ public class playerBehavior : MonoBehaviour
         {
             // checks if the player is contacting the ground
             isOnGround = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
+
             if (isOnGround && Input.GetAxis("Jump") > 0)
             {
                 initRotation = mRB.rotation;
@@ -92,20 +93,19 @@ public class playerBehavior : MonoBehaviour
             }
 
             //checks if player is above a grindable object
-            Debug.Log(rayCastLeft.grindable);
             if (rayCastLeft.grindable)
             {
-                Debug.Log("above rail");
                 if (Input.GetAxis("Vertical") < 0)
                 {
                     isAboveRail = true;
                     gb.UpdateScore(2);
-                    float turnSpeed = 100f;
+                    float turnSpeed = 10f;
                     float newX = transform.position.x + 0.5f;
                     Vector3 targetVector = rayCastLeft.gTransform.right;
                     float angle = Mathf.Atan2(targetVector.y, targetVector.x) * Mathf.Rad2Deg;
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed * Time.deltaTime);
-                    transform.position = new Vector3(newX, rayCastLeft.railY, 0f);
+                    Vector3 destination = new Vector3(newX, rayCastLeft.railY + 5f, 0f);
+                    transform.position = Vector3.Lerp(transform.position, destination, 10f * Time.deltaTime);
                 }
             }
             else
@@ -139,7 +139,7 @@ public class playerBehavior : MonoBehaviour
                 speedBoostTime -= Time.deltaTime;
                 if (speedBoostTime > 0f)
                 {
-                    mRB.AddForce(Vector3.Normalize(transform.right) * 50 * speedMultiplier);
+                    mRB.AddForce(Vector3.Normalize(transform.right) * 20f * speedMultiplier);
                     gb.updateTimer(2f, speedBoostTime);
                 }
                 else
@@ -158,10 +158,12 @@ public class playerBehavior : MonoBehaviour
                 gb.UpdateSpeedMulText("Boost X " + speedMultiplier);
 
             if (jumped)
+            //if (!isOnGround)
             {
                 CheckForTricks();
             }
         }
+
         if (HeroState == State.Crash)//Player Crash
         {
             gb.UpdateLandingText("Landing: CRASH!");

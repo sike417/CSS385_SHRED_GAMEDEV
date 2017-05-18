@@ -17,7 +17,7 @@ public class raycastUp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 10f);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -transform.up, 10f, parent.groundLayer);
 
         Debug.DrawRay(transform.position, -Vector3.up * 10f, Color.green);
         if (hit)
