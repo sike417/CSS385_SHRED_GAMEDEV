@@ -30,7 +30,8 @@ public class playerBehavior : MonoBehaviour
     private raycastUp rayCastLeft, rayCastRight;
     private State HeroState;
 
-    // ground checker variables     
+    // ground checker variables 
+    private bool previousGround = false;    
     public LayerMask groundLayer;
     public Transform groundChecker;
     public bool isOnGround = false;
@@ -77,15 +78,22 @@ public class playerBehavior : MonoBehaviour
             // checks if the player is contacting the ground
             isOnGround = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
 
+            if (isOnGround)
+                previousGround = isOnGround;
+
             if (isOnGround && Input.GetAxis("Jump") > 0)
             {
                 initRotation = mRB.rotation;
                 isOnGround = false;
+                previousGround = false;
                 jumped = true;
                 mRB.AddForce(new Vector2(0, jumpHeight));
                 gm.GetComponent<GlobalBehavior>().UpdateLandingText("Landing: In Air");
             } else if (!isOnGround) {
-                initRotation = mRB.rotation;
+                if (previousGround){
+                    initRotation = mRB.rotation;
+                    previousGround = false;
+                }
                 jumped = true;
                 gm.GetComponent<GlobalBehavior>().UpdateLandingText("Landing: In Air");
             }
