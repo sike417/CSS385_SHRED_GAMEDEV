@@ -12,7 +12,7 @@ public class playerBehavior : MonoBehaviour
     #region global variables
     // player variables
     public const float maxSpeed = 100f;
-    public const float jumpHeight = 800f;
+    public const float jumpHeight = 400f;
     public const float rotationSpeed = 200f;
     public const float grindSpeed = 50;
     public float speedBoostTime = 2f; // the duration the speed boost is applied for
@@ -83,6 +83,10 @@ public class playerBehavior : MonoBehaviour
                 isOnGround = false;
                 jumped = true;
                 mRB.AddForce(new Vector2(0, jumpHeight));
+                gm.GetComponent<GlobalBehavior>().UpdateLandingText("Landing: In Air");
+            } else if (!isOnGround) {
+                initRotation = mRB.rotation;
+                jumped = true;
                 gm.GetComponent<GlobalBehavior>().UpdateLandingText("Landing: In Air");
             }
             // checks if player's head has hit the ground
@@ -158,7 +162,7 @@ public class playerBehavior : MonoBehaviour
                 gb.UpdateSpeedMulText("Boost X " + speedMultiplier);
 
             if (jumped)
-            //if (!isOnGround)
+//            if (!isOnGround)
             {
                 CheckForTricks();
             }
@@ -258,7 +262,7 @@ public class playerBehavior : MonoBehaviour
                 HeroState = State.Crash;
             }
 
-            mRB.AddForce((rayCastRight.point - rayCastLeft.point) * AddedSpeed);
+            mRB.AddForce((rayCastRight.point - rayCastLeft.point) * AddedSpeed * (1 / angle));  //added 1 / angle
         }
         #endregion
     }
