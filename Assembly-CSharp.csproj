@@ -61,6 +61,7 @@
      <Compile Include="Assets\Polyline Editor\Examples\Example2_Simple2DTerrainEditor\Libs\Triangluator.cs" />
      <Compile Include="Assets\Polyline Editor\Examples\Example2_Simple2DTerrainEditor\Scripts\Simple2DTerrain.cs" />
      <Compile Include="Assets\Polyline Editor\Scripts\Polyline.cs" />
+     <Compile Include="Assets\SnowFollow.cs" />
      <None Include="Assets\Standard Assets\ParticleSystems\Shaders\PriorityParticleAlpha.shader" />
      <None Include="Assets\Standard Assets\ParticleSystems\ParticleSystemsGuidelines.txt" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
