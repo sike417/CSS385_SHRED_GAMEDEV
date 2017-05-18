@@ -31,7 +31,7 @@ public class CameraScript : MonoBehaviour
     {
         if (camerastate == CamState.Following)
         {
-            Vector2 camPos = this.transform.position;
+//            Vector2 camPos = this.transform.position;
             Vector2 heroPos = mHero.transform.position;
             transform.position = new Vector3(heroPos.x + offsetX, heroPos.y, -10);
             cam = GetComponent<Camera>();

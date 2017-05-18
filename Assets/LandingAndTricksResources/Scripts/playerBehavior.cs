@@ -262,7 +262,14 @@ public class playerBehavior : MonoBehaviour
                 HeroState = State.Crash;
             }
 
-            mRB.AddForce((rayCastRight.point - rayCastLeft.point) * AddedSpeed * (1 / angle));  //added 1 / angle
+            if (angle > 1)
+            {
+                mRB.AddForce((rayCastRight.point - rayCastLeft.point) * AddedSpeed * (1 / angle)); //added 1 / angle
+            }
+            else
+            {
+                mRB.AddForce((rayCastRight.point - rayCastLeft.point) * AddedSpeed);
+            }
         }
         #endregion
     }
