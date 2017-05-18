@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="Assets\DeathColliderScript.cs" />
     <Compile Include="Assets\FinishScript.cs" />
+    <Compile Include="Assets\GameManageScript.cs" />
     <Compile Include="Assets\GeneralScript\CameraScript.cs" />
     <Compile Include="Assets\GeneralScript\CrashCollider.cs" />
     <Compile Include="Assets\GeneralScript\GlobalUIScript.cs" />
@@ -96,11 +97,13 @@
     <Compile Include="Assets\LandingAndTricksResources\Scripts\GlobalBehavior.cs" />
     <Compile Include="Assets\LandingAndTricksResources\Scripts\playerBehavior.cs" />
     <Compile Include="Assets\LandingAndTricksResources\Scripts\raycastUp.cs" />
+    <Compile Include="Assets\MenuManager.cs" />
     <Compile Include="Assets\Polyline Editor\Examples\Example1_Path\Scripts\PathMovement.cs" />
     <Compile Include="Assets\Polyline Editor\Examples\Example2_Simple2DTerrainEditor\Libs\Triangluator.cs" />
     <Compile Include="Assets\Polyline Editor\Examples\Example2_Simple2DTerrainEditor\Scripts\Simple2DTerrain.cs" />
     <Compile Include="Assets\Polyline Editor\Scripts\Polyline.cs" />
     <Compile Include="Assets\SnowFollow.cs" />
+    <Compile Include="Assets\selectLevelScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
