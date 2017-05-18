@@ -11,13 +11,13 @@ public class playerBehavior : MonoBehaviour
     };
     #region global variables
     // player variables
-    public const float maxSpeed = 100f;
-    public const float jumpHeight = 400f;
+    public const float maxSpeed = 140f;
+    public const float jumpHeight = 600f;
     public const float rotationSpeed = 200f;
     public const float grindSpeed = 50;
     public float speedBoostTime = 2f; // the duration the speed boost is applied for
     private float speedMultiplier;
-    private float AddedSpeed = 90.2f;
+    private float AddedSpeed = 100.2f;
     private bool jumped = true;
     private bool boost = false;
     private bool isAboveRail = false;
