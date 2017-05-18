@@ -14,6 +14,7 @@ public class GlobalBehavior : MonoBehaviour
     private int score = 0;
     public GameObject UIGame;
     public GameObject UIDie;
+    public GameObject UIWin;
     public Camera camera;
     // UI text variables
     public Text landingText;
@@ -31,6 +32,8 @@ public class GlobalBehavior : MonoBehaviour
         crashSound = GetComponent<AudioSource>();
         timerImage.fillAmount = 0;
         UIDie.SetActive(false);
+        UIWin.SetActive(false);
+
         cs = (CameraScript)GetComponentInParent(typeof(CameraScript));
         pb = (playerBehavior)mSnowboarder.GetComponent(typeof(playerBehavior));
     }
@@ -42,7 +45,7 @@ public class GlobalBehavior : MonoBehaviour
         {
             //DestroyObject(mSnowboarder);
             PlayerDie();
-            score = 0;
+//            score = 0;
             //mSnowboarder = Instantiate(mSnowboarderClone, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         }
         //Debug.Log(speedMulText.text);
@@ -52,6 +55,7 @@ public class GlobalBehavior : MonoBehaviour
 
         if(mSnowboarder.transform.position.x > finishLine.transform.position.x)
         {
+            PlayerWin();
             // win game screen
         }
     }
@@ -80,14 +84,24 @@ public class GlobalBehavior : MonoBehaviour
     {
         timerImage.fillAmount = deltaTime / initTime;
     }
+
+    public void PlayerWin()
+    {
+        score = 0;
+        UIWin.SetActive(true);
+        UIGame.SetActive(false);
+        cs.StopCam();
+    }
     public void PlayerDie()
     {
+        score = 0;
         UIDie.SetActive(true);
         UIGame.SetActive(false);
         cs.StopCam();
     }
     public void RetryLevel()
     {
+        UIWin.SetActive(false);
         UIDie.SetActive(false);
         UIGame.SetActive(true);
         pb.Retry();

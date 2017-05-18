@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\DeathColliderScript.cs" />
+    <Compile Include="Assets\FinishScript.cs" />
     <Compile Include="Assets\GeneralScript\CameraScript.cs" />
     <Compile Include="Assets\GeneralScript\CrashCollider.cs" />
     <Compile Include="Assets\GeneralScript\GlobalUIScript.cs" />
