@@ -55,7 +55,8 @@ public class GlobalBehavior : MonoBehaviour
 
         if(mSnowboarder.transform.position.x > finishLine.transform.position.x)
         {
-            PlayerWin();
+            if(pb.getState()=="Live")
+                PlayerWin();
             // win game screen
         }
     }
@@ -87,6 +88,7 @@ public class GlobalBehavior : MonoBehaviour
 
     public void PlayerWin()
     {
+        pb.winPlayer();
         score = 0;
         UIWin.SetActive(true);
         UIGame.SetActive(false);

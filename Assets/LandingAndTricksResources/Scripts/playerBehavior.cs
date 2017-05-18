@@ -7,9 +7,9 @@ public class playerBehavior : MonoBehaviour
 {
     enum State
     {
-        Live, Die,Crash
+        Live, Die,Crash,Win
     };
-    #region global variables
+    #region global variablesF
     // player variables
     public const float maxSpeed = 140f;
     public const float jumpHeight = 600f;
@@ -308,7 +308,10 @@ public class playerBehavior : MonoBehaviour
             PlayerJump();
         }
     }
-
+    public void winPlayer()
+    {
+        HeroState = State.Win;
+    }
     void BoostPlayer(float boostMul)
     {
         speedMultiplier = boostMul;
