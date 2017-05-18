@@ -9,6 +9,7 @@ public class GlobalBehavior : MonoBehaviour
     public Transform spawnLocation;
     public GameObject mSnowboarder;
     public GameObject mSnowboarderClone;
+    public GameObject finishLine;
     private AudioSource crashSound;
     private int score = 0;
     public GameObject UIGame;
@@ -22,6 +23,7 @@ public class GlobalBehavior : MonoBehaviour
     public Image timerImage;
     private CameraScript cs;
     private playerBehavior pb;
+
     // Use this for initialization
     void Start()
     {
@@ -47,6 +49,11 @@ public class GlobalBehavior : MonoBehaviour
         //Debug.Log(trickText.text);
         
         scoreText.text = "Score: " + score.ToString();
+
+        if(mSnowboarder.transform.position.x > finishLine.transform.position.x)
+        {
+            // win game screen
+        }
     }
 
     public void UpdateLandingText(string newText)
