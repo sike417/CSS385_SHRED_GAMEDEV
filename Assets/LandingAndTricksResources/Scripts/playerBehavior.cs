@@ -300,8 +300,8 @@ public class playerBehavior : MonoBehaviour
         Vector3 targetVector = rayCastLeft.gTransform.right;
         float angle = Mathf.Atan2(targetVector.y, targetVector.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, angle), turnSpeed * Time.deltaTime);
-        Vector3 destination = new Vector3(newX, rayCastLeft.railY + gameObject.GetComponent<Collider2D>().bounds.size.y / 2, 0f);
-        transform.position = Vector3.Lerp(transform.position, destination, 15f * Time.deltaTime);
+        Vector3 destination = new Vector3(newX, rayCastLeft.railY + (gameObject.GetComponent<Collider2D>().bounds.center.y - gameObject.GetComponent<Collider2D>().bounds.min.y)/2, 0f);
+        transform.position = Vector3.Lerp(transform.position, destination, 100f * Time.deltaTime);
         if (Input.GetAxis("Jump") > 1)
         {
             attachedToRail = false;
