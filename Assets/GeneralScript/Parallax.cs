@@ -12,7 +12,8 @@ public class Parallax : MonoBehaviour {
     private float viewZone;
     public Rigidbody2D MheroRB;
     public GameObject Snowboarder;
-    public float Speed;
+    public float layerOneDX;
+    public float layerOneDY;
     private float lastCamX,lastCamY;
     public void Start()
     {
@@ -26,6 +27,8 @@ public class Parallax : MonoBehaviour {
         bgSize = layers[1].transform.position.x - layers[0].transform.position.x;
         lastCamX = camT.transform.position.x;
         lastCamY = camT.transform.position.y;
+        layerOneDX = 0.90f;
+        layerOneDY = 0.98f;
     }
 
     private void shiftlLeft()
@@ -59,12 +62,10 @@ public class Parallax : MonoBehaviour {
             shiftRight();
         }
        
-            transform.position += Vector3.right * ((camT.transform.position.x - lastCamX) * Speed);
+            transform.position += Vector3.right * ((camT.transform.position.x - lastCamX) * layerOneDX);
             lastCamX = camT.transform.position.x;
-        
-        
-            transform.position += Vector3.up * ((camT.transform.position.y - lastCamY) * Speed);
+
+            transform.position += Vector3.up * ((camT.transform.position.y - lastCamY) * layerOneDY);
             lastCamY = camT.transform.position.y;
-        
     }
 }
