@@ -45,7 +45,7 @@ public class GlobalBehavior : MonoBehaviour
         {
             //DestroyObject(mSnowboarder);
             PlayerDie();
-//            score = 0;
+            score = 0;
             //mSnowboarder = Instantiate(mSnowboarderClone, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         }
         //Debug.Log(speedMulText.text);

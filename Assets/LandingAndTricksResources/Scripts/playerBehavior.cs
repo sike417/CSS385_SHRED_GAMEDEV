@@ -11,17 +11,18 @@ public class playerBehavior : MonoBehaviour
     };
     #region global variablesF
     // player variables
-    public const float maxSpeed = 140f;
+    public float maxSpeed = 140f;
     public const float jumpHeight = 600f;
     public const float rotationSpeed = 200f;
     public const float grindSpeed = 50;
-    public float speedBoostTime = 2f; // the duration the speed boost is applied for
+    public float velocity = 0;
+    private float speedBoostTime = 2f; // the duration the speed boost is applied for    
     private float speedMultiplier;
     private float AddedSpeed = 100.2f;
     private bool jumped = true;
     private bool boost = false;
     private bool isAboveRail = false;
-    private bool attachedToRail = false;
+    public bool attachedToRail = false;
     private bool trickComplete = false;
     private float initRotation;
     private Vector3 initPos;
@@ -59,28 +60,26 @@ public class playerBehavior : MonoBehaviour
         rayCastRight = GameObject.Find("ray_cast_right").GetComponent<raycastUp>();
 
         speedMultiplier = 1;
-
-        gb.UpdateLandingText("Landing: In Air");
-
-        gb.UpdateTrickText("Trick: ");
     }
 
     void Update()
     {
-        
+        velocity = mRB.velocity.magnitude;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-       
         if (HeroState == State.Live)
         {
             // checks if the player is contacting the ground
             isOnGround = Physics2D.OverlapCircle(groundChecker.position, groundCheckerRadius, groundLayer);
 
             if (isOnGround)
+            {
                 previousGround = isOnGround;
+            }
+
 
             if (isOnGround && Input.GetAxis("Jump") > 0)
             {
@@ -89,14 +88,17 @@ public class playerBehavior : MonoBehaviour
                 previousGround = false;
                 jumped = true;
                 mRB.AddForce(new Vector2(0, jumpHeight));
-                gm.GetComponent<GlobalBehavior>().UpdateLandingText("Landing: In Air");
-            } else if (!isOnGround) {
-                if (previousGround){
+                gb.UpdateLandingText("Landing: In Air");
+            }
+            else if (!isOnGround)
+            {
+                if (previousGround)
+                {
                     initRotation = mRB.rotation;
                     previousGround = false;
                 }
                 jumped = true;
-                gm.GetComponent<GlobalBehavior>().UpdateLandingText("Landing: In Air");
+                gb.UpdateLandingText("Landing: In Air");
             }
             // checks if player's head has hit the ground
             if (Physics2D.OverlapCircle(headChecker.position, headCheckerRadius, groundLayer))
@@ -198,7 +200,6 @@ public class playerBehavior : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         #region ground trigger
-
         if (other.gameObject.CompareTag("GroundCollider") && jumped)
         {
             float angle = Vector2.Angle(this.transform.right, rayCastRight.point - rayCastLeft.point);

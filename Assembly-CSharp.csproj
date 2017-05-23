@@ -49,6 +49,7 @@
      <Compile Include="Assets\DeathColliderScript.cs" />
      <Compile Include="Assets\FinishScript.cs" />
      <Compile Include="Assets\GameManageScript.cs" />
+     <Compile Include="Assets\GeneralScript\AudioPlayer.cs" />
      <Compile Include="Assets\GeneralScript\CameraScript.cs" />
      <Compile Include="Assets\GeneralScript\CrashCollider.cs" />
      <Compile Include="Assets\GeneralScript\GlobalUIScript.cs" />
@@ -57,6 +58,7 @@
      <Compile Include="Assets\GeneralScript\PlayerRayZoom.cs" />
      <Compile Include="Assets\GeneralScript\UIScript.cs" />
      <Compile Include="Assets\LandingAndTricksResources\Scripts\GlobalBehavior.cs" />
+     <Compile Include="Assets\LandingAndTricksResources\Scripts\PlayerSounds.cs" />
      <Compile Include="Assets\LandingAndTricksResources\Scripts\playerBehavior.cs" />
      <Compile Include="Assets\LandingAndTricksResources\Scripts\raycastUp.cs" />
      <Compile Include="Assets\MenuManager.cs" />
