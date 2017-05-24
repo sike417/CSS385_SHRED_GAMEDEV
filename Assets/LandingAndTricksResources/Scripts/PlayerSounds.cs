@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerSounds : MonoBehaviour {
 
-    public AudioClip snowboard, grind, speedBoost;
-    private AudioSource boardSrc, grindSrc, speedBoostSrc;
+    public AudioClip snowboard, grind, collisionS, speedBoost;
+    private AudioSource boardSrc, grindSrc, collisionSrc, speedBoostSrc;
     private playerBehavior pb;
 
     // Use this for initialization
@@ -13,6 +13,7 @@ public class PlayerSounds : MonoBehaviour {
     {
         boardSrc = GameObject.Find("snow_board_sound").GetComponent<AudioSource>();
         grindSrc = GameObject.Find("grind_sound").GetComponent<AudioSource>();
+//        collisionSrc = GameObject.Find("collision_sound").GetComponent<AudioSource>();
 
         pb = GetComponent<playerBehavior>();
     }
@@ -30,6 +31,11 @@ public class PlayerSounds : MonoBehaviour {
             boardSrc.clip = snowboard;
             boardSrc.Play();
         }
+
+//        if (pb.getState() == 2.ToString())
+//        {
+            
+//        }
 
         if (!pb.attachedToRail)
             grindSrc.Stop();

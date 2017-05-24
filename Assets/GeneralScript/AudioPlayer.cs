@@ -34,8 +34,7 @@ public class AudioPlayer : MonoBehaviour {
     AudioClip GetRandomClip(AudioClip lastPlayed)
     {
         AudioClip newClip;
-        do
-        {
+        do {
             newClip = audioClips[Random.Range(0, audioClips.Length)];
         }
         while (newClip == lastPlayed);
