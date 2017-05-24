@@ -27,6 +27,7 @@ public class playerBehavior : MonoBehaviour
     private float stateTimer = 0;
     private GameObject gm;
     private GlobalBehavior gb;
+    private TrailRenderer trail;
     public float boost = 2.5f;
     private bool addBoost = false;
     private raycastUp rayCastLeft, rayCastRight;
@@ -55,6 +56,7 @@ public class playerBehavior : MonoBehaviour
 
         gm = GameObject.Find("Game Manager");
         gb = gm.GetComponent<GlobalBehavior>();
+        trail = GetComponent<TrailRenderer>();
 
         rayCastLeft = GameObject.Find("ray_cast_left").GetComponent<raycastUp>();
         rayCastRight = GameObject.Find("ray_cast_right").GetComponent<raycastUp>();
@@ -62,7 +64,7 @@ public class playerBehavior : MonoBehaviour
 
     void Update()
     {
-        velocity = mRB.velocity.magnitude;
+        velocity = mRB.velocity.magnitude;                    
     }
 
     // Update is called once per frame
@@ -150,7 +152,7 @@ public class playerBehavior : MonoBehaviour
             // apply speed boost for x amount of seconds
             if (addBoost && trickComplete)
             {
-                if (boost < 10)
+                if (boost <= 10)
                     boost += 2 * boostMul;
                 addBoost = false;
                 trickComplete = false;
@@ -162,7 +164,14 @@ public class playerBehavior : MonoBehaviour
                 {
                     mRB.AddForce(Vector3.Normalize(transform.right) * 40f);
                     boost -= 1 * Time.deltaTime;
+                    if (trail.time < 1)
+                        trail.time += 0.3f * Time.deltaTime;
                 }
+            }
+            else
+            {
+                if (trail.time > 0)
+                    trail.time -= 0.3f * Time.deltaTime;
             }
 
             gb.UpdateBoostBar(boost);
