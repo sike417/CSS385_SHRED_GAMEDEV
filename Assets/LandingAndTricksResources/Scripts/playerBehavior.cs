@@ -183,11 +183,11 @@ public class playerBehavior : MonoBehaviour
         {
             gb.UpdateLandingText("Landing: CRASH!");
             stateTimer += 1 * Time.smoothDeltaTime;
-
-            if(stateTimer>1.5)
-            {
+//            HeroState =
+//            if(stateTimer>1.5)
+//            {
                 HeroState = State.Die;
-            }
+//            }
         }
 
         if (HeroState == State.Die)//Player Die
