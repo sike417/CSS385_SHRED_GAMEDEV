@@ -16,11 +16,9 @@ public class playerBehavior : MonoBehaviour
     public const float rotationSpeed = 200f;
     public const float grindSpeed = 50;
     public float velocity = 0;
-    private float speedBoostTime = 2f; // the duration the speed boost is applied for    
-    private float speedMultiplier;
+    private float boostMul;
     private float AddedSpeed = 100.2f;
-    private bool jumped = true;
-    private bool boost = false;
+    private bool jumped = true;    
     private bool isAboveRail = false;
     public bool attachedToRail = false;
     private bool trickComplete = false;
@@ -29,6 +27,8 @@ public class playerBehavior : MonoBehaviour
     private float stateTimer = 0;
     private GameObject gm;
     private GlobalBehavior gb;
+    private float boost = 2.5f;
+    private bool addBoost = false;
     private raycastUp rayCastLeft, rayCastRight;
     private State HeroState;
 
@@ -52,14 +52,12 @@ public class playerBehavior : MonoBehaviour
         initPos = transform.position;
         mRB = GetComponent<Rigidbody2D>();
         HeroState = State.Live;
-        gm = GameObject.Find("Game Manager");
 
+        gm = GameObject.Find("Game Manager");
         gb = gm.GetComponent<GlobalBehavior>();
 
         rayCastLeft = GameObject.Find("ray_cast_left").GetComponent<raycastUp>();
         rayCastRight = GameObject.Find("ray_cast_right").GetComponent<raycastUp>();
-
-        speedMultiplier = 1;
     }
 
     void Update()
@@ -88,7 +86,7 @@ public class playerBehavior : MonoBehaviour
                 previousGround = false;
                 jumped = true;
                 mRB.AddForce(new Vector2(0, jumpHeight));
-                gb.UpdateLandingText("Landing: In Air");
+                gb.UpdateLandingText("");
             }
             else if (!isOnGround)
             {
@@ -98,7 +96,7 @@ public class playerBehavior : MonoBehaviour
                     previousGround = false;
                 }
                 jumped = true;
-                gb.UpdateLandingText("Landing: In Air");
+                gb.UpdateLandingText("");
             }
             // checks if player's head has hit the ground
             if (Physics2D.OverlapCircle(headChecker.position, headCheckerRadius, groundLayer))
@@ -150,28 +148,24 @@ public class playerBehavior : MonoBehaviour
             }
 
             // apply speed boost for x amount of seconds
-            if (boost && trickComplete)
+            if (addBoost && trickComplete)
             {
-                speedBoostTime -= Time.deltaTime;
-                if (speedBoostTime > 0f)
+                if (boost < 10)
+                    boost += 2 * boostMul;
+                addBoost = false;
+                trickComplete = false;
+            }
+
+            if (Input.GetKey("left shift"))
+            {
+                if (boost > 0)
                 {
-                    mRB.AddForce(Vector3.Normalize(transform.right) * 20f * speedMultiplier);
-                    gb.updateTimer(2f, speedBoostTime);
-                }
-                else
-                {
-                    boost = false;
-                    trickComplete = false;
-                    speedMultiplier = 1f;
-                    speedBoostTime = 2f; // reset timer
+                    mRB.AddForce(Vector3.Normalize(transform.right) * 40f);
+                    boost -= 1 * Time.deltaTime;
                 }
             }
 
-            // update text
-            if (speedMultiplier == 1f)
-                gb.UpdateSpeedMulText("");
-            else
-                gb.UpdateSpeedMulText("Boost X " + speedMultiplier);
+            gb.UpdateBoostBar(boost);
 
             if (jumped)
             {
@@ -181,7 +175,7 @@ public class playerBehavior : MonoBehaviour
 
         if (HeroState == State.Crash)//Player Crash
         {
-            gb.UpdateLandingText("Landing: CRASH!");
+            gb.UpdateLandingText("CRASH!");
             stateTimer += 1 * Time.smoothDeltaTime;
 //            HeroState =
 //            if(stateTimer>1.5)
@@ -211,9 +205,12 @@ public class playerBehavior : MonoBehaviour
                 jumped = false;
 
                 if (trickComplete)
-                    BoostPlayer(2f);
+                {
+                    boostMul = 2f;
+                    addBoost = true;
+                }
 
-                gb.UpdateLandingText("Landing: Perfect! +" + reward);
+                gb.UpdateLandingText("Perfect! +" + reward);
                 gb.UpdateScore(reward);
             }
             else if (angle <= 30f)
@@ -221,11 +218,14 @@ public class playerBehavior : MonoBehaviour
                 int reward = 15;
 
                 if (trickComplete)
-                    BoostPlayer(1.8f);
+                {
+                    boostMul = 1.8f;
+                    addBoost = true;
+                }
 
                 jumped = false;
 
-                gb.UpdateLandingText("Landing: Great! +" + reward);
+                gb.UpdateLandingText("Great! +" + reward);
                 gb.UpdateScore(reward);
             }
             else if (angle <= 45f)
@@ -233,11 +233,14 @@ public class playerBehavior : MonoBehaviour
                 int reward = 10;
 
                 if (trickComplete)
-                    BoostPlayer(1.6f);
+                {
+                    boostMul = 1.6f;
+                    addBoost = true;
+                }
 
                 jumped = false;
 
-                gb.UpdateLandingText("Landing: Good! +" + reward);
+                gb.UpdateLandingText("Good! +" + reward);
                 gb.UpdateScore(reward);
 
             }
@@ -246,11 +249,14 @@ public class playerBehavior : MonoBehaviour
                 int reward = 5;
 
                 if (trickComplete)
-                    BoostPlayer(1.2f);
+                {
+                    boostMul = 1.2f;
+                    addBoost = true;
+                }
 
                 jumped = false;
 
-                gb.UpdateLandingText("Landing: Alright +" + reward);
+                gb.UpdateLandingText("Alright +" + reward);
                 gb.UpdateScore(reward);
             }
             else if (angle <= 90f)
@@ -258,16 +264,20 @@ public class playerBehavior : MonoBehaviour
                 int reward = 2;
 
                 if (trickComplete)
-                    BoostPlayer(0.5f);
+                {
+                    boostMul = 0.5f;
+                    addBoost = true;
+                }
+                    
 
                 jumped = false;
 
-                gb.UpdateLandingText("Landing: Poor +" + reward);
+                gb.UpdateLandingText("Poor +" + reward);
                 gb.UpdateScore(reward);
             }
             else
             {
-                gb.UpdateLandingText("Landing: CRASH!");
+                gb.UpdateLandingText("CRASH!");
                 LocalDestroy();
                 HeroState = State.Crash;
             }
@@ -290,7 +300,7 @@ public class playerBehavior : MonoBehaviour
         isOnGround = false;
         jumped = true;
         mRB.AddForce(new Vector2(0, jumpHeight));
-        gm.GetComponent<GlobalBehavior>().UpdateLandingText("Landing: In Air");
+        gm.GetComponent<GlobalBehavior>().UpdateLandingText("");
     }
 
     void PlayerAttachToRail()
@@ -313,11 +323,7 @@ public class playerBehavior : MonoBehaviour
     {
         HeroState = State.Win;
     }
-    void BoostPlayer(float boostMul)
-    {
-        speedMultiplier = boostMul;
-        boost = true;
-    }
+
     public string getState()
     {
         return HeroState.ToString();
@@ -339,10 +345,10 @@ public class playerBehavior : MonoBehaviour
         absouluteAngle += Mathf.Abs(initRotation - trickRotation);
 
         if (deltaAngle > 330f)
-            gb.UpdateTrickText("Trick: Frontflip");
+            gb.UpdateTrickText("Frontflip");
 
         else if (deltaAngle < -330f)
-            gb.UpdateTrickText("Trick: Backflip");
+            gb.UpdateTrickText("Backflip");
 
         tricksInARow = (int)(absouluteAngle / 330f);
 
@@ -350,7 +356,7 @@ public class playerBehavior : MonoBehaviour
         {
             trickComplete = true;
             gb.UpdateScore(reward * tricksInARow);
-            gb.UpdateTrickText("Trick: Combo +" + reward + " X " + tricksInARow);
+            gb.UpdateTrickText("Combo +" + reward + " X " + tricksInARow);
         }
         else
         {
@@ -359,7 +365,7 @@ public class playerBehavior : MonoBehaviour
             {
                 trickComplete = true;
                 gb.UpdateScore(reward);
-                gb.UpdateTrickText("Trick: Backflip +" + reward);
+                gb.UpdateTrickText("Backflip +" + reward);
             }
 
             // back flip detection
@@ -367,7 +373,7 @@ public class playerBehavior : MonoBehaviour
             {
                 trickComplete = true;
                 gb.UpdateScore(reward);
-                gb.UpdateTrickText("Trick: Backflip +" + reward);
+                gb.UpdateTrickText("Backflip +" + reward);
             }
         }
     }
@@ -380,8 +386,7 @@ public class playerBehavior : MonoBehaviour
     }
     void LocalDestroy()
     {
-        speedMultiplier = 0f;
-        boost = false;
+        boost = 2.5f;
         jumped = false;
         //gb.DestroyMe();
     }

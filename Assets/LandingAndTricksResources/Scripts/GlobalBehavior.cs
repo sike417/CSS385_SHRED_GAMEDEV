@@ -18,10 +18,9 @@ public class GlobalBehavior : MonoBehaviour
     public Camera camera;
     // UI text variables
     public Text landingText;
-    public Text speedMulText;
     public Text trickText;
     public Text scoreText;
-    public Image timerImage;
+    private Slider boostBar;
     private CameraScript cs;
     private playerBehavior pb;
 
@@ -30,12 +29,12 @@ public class GlobalBehavior : MonoBehaviour
     {
         //mSnowboarder = Instantiate(mSnowboarderClone, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         crashSound = GetComponent<AudioSource>();
-        timerImage.fillAmount = 0;
         UIDie.SetActive(false);
         UIWin.SetActive(false);
 
         cs = (CameraScript)GetComponentInParent(typeof(CameraScript));
         pb = (playerBehavior)mSnowboarder.GetComponent(typeof(playerBehavior));
+        boostBar = GameObject.Find("Boost Bar").GetComponent<Slider>();
     }
 
     // Update is called once per frame
@@ -66,11 +65,6 @@ public class GlobalBehavior : MonoBehaviour
         landingText.text = newText;
     }
 
-    public void UpdateSpeedMulText(string newText)
-    {
-        speedMulText.text = newText;
-    }
-
     public void UpdateTrickText(string newText)
     {
         trickText.text = newText;
@@ -79,11 +73,6 @@ public class GlobalBehavior : MonoBehaviour
     public void UpdateScore(int points)
     {
         score += points;
-    }
-
-    public void updateTimer(float initTime, float deltaTime)
-    {
-        timerImage.fillAmount = deltaTime / initTime;
     }
 
     public void PlayerWin()
@@ -114,9 +103,13 @@ public class GlobalBehavior : MonoBehaviour
     {
         //DestroyObject(mSnowboarder);
         crashSound.Play();
-        speedMulText.text = "";
-        trickText.text = "Trick:";
+        trickText.text = "";
         score = 0;
         PlayerDie();
+    }
+
+    public void UpdateBoostBar(float amount)
+    {
+        boostBar.value = amount;
     }
 }
