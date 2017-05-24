@@ -27,7 +27,7 @@ public class playerBehavior : MonoBehaviour
     private float stateTimer = 0;
     private GameObject gm;
     private GlobalBehavior gb;
-    private float boost = 2.5f;
+    public float boost = 2.5f;
     private bool addBoost = false;
     private raycastUp rayCastLeft, rayCastRight;
     private State HeroState;
