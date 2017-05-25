@@ -49,6 +49,7 @@ public class GlobalBehavior : MonoBehaviour
             score = 0;
             //mSnowboarder = Instantiate(mSnowboarderClone, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         }
+
         //Debug.Log(speedMulText.text);
         //Debug.Log(trickText.text);
         
