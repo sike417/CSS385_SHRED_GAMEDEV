@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerSounds : MonoBehaviour {
 
-    public AudioClip snowboard, grind, collisionS, speedBoost;
+    public AudioClip snowboard, grind, collisionSound, speedBoost;
     private AudioSource boardSrc, grindSrc, collisionSrc, speedBoostSrc;
     private playerBehavior pb;
+    private bool hasCrashed = false;
 
     // Use this for initialization
     void Start()
@@ -14,7 +17,7 @@ public class PlayerSounds : MonoBehaviour {
         boardSrc = GameObject.Find("snow_board_sound").GetComponent<AudioSource>();
         grindSrc = GameObject.Find("grind_sound").GetComponent<AudioSource>();
         speedBoostSrc = GameObject.Find("speed_boost_sound").GetComponent<AudioSource>();
-        //        collisionSrc = GameObject.Find("collision_sound").GetComponent<AudioSource>();
+        collisionSrc = GameObject.Find("collision_sound").GetComponent<AudioSource>();
 
         pb = GetComponent<playerBehavior>();
     }
@@ -22,12 +25,13 @@ public class PlayerSounds : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (!pb.isOnGround)
+        if (!pb.isOnGround || pb.getState() != "Live" )
             boardSrc.Stop();
-
-        boardSrc.volume = pb.velocity * 20 / pb.maxSpeed;
+        
+        boardSrc.volume = pb.velocity * 30 / pb.maxSpeed;
         boardSrc.pitch = pb.velocity * 5 / pb.maxSpeed;
-        if (pb.isOnGround && !boardSrc.isPlaying)
+
+        if (pb.isOnGround && !boardSrc.isPlaying && pb.getState() == "Live")
         {
             boardSrc.clip = snowboard;
             boardSrc.Play();
@@ -48,6 +52,14 @@ public class PlayerSounds : MonoBehaviour {
             grindSrc.Play();
         }
 
+        if (pb.getState() == "Die" && hasCrashed == false)
+        {
+            collisionSrc.volume = 0.3f;
+            collisionSrc.clip = collisionSound;
+            collisionSrc.Play();
+            hasCrashed = true;
+        }
+
         if (!Input.GetKey("left shift") || pb.boost < 0)
             speedBoostSrc.Stop();
 
@@ -57,5 +69,10 @@ public class PlayerSounds : MonoBehaviour {
             speedBoostSrc.clip = speedBoost;
             speedBoostSrc.Play();
         }
-    }       
+    }
+
+    public void Retry()
+    {
+        hasCrashed = true;
+    }
 }

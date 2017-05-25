@@ -23,6 +23,7 @@ public class GlobalBehavior : MonoBehaviour
     private Slider boostBar;
     private CameraScript cs;
     private playerBehavior pb;
+    private PlayerSounds ps;
 
     // Use this for initialization
     void Start()
@@ -34,6 +35,7 @@ public class GlobalBehavior : MonoBehaviour
 
         cs = (CameraScript)GetComponentInParent(typeof(CameraScript));
         pb = (playerBehavior)mSnowboarder.GetComponent(typeof(playerBehavior));
+        ps = (PlayerSounds) mSnowboarder.GetComponent(typeof(PlayerSounds));
         boostBar = GameObject.Find("Boost Bar").GetComponent<Slider>();
     }
 
@@ -96,13 +98,14 @@ public class GlobalBehavior : MonoBehaviour
         UIDie.SetActive(false);
         UIGame.SetActive(true);
         pb.Retry();
+        ps.Retry();
         cs.StartCam();
         
     }
     public void DestroyMe()
     {
         //DestroyObject(mSnowboarder);
-        crashSound.Play();
+//        crashSound.Play();
         trickText.text = "";
         score = 0;
         PlayerDie();
