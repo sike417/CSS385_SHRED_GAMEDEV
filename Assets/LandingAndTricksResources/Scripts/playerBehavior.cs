@@ -25,9 +25,10 @@ public class playerBehavior : MonoBehaviour
     private float initRotation;
     private Vector3 initPos;
     private float stateTimer = 0;
-    private GameObject gm;
+    private GameObject gm, smallSnow, largeSnow;
     private GlobalBehavior gb;
     private TrailRenderer trail;
+    private ParticleSystem snowBurst;
     public float boost = 2.5f;
     private bool addBoost = false;
     private raycastUp rayCastLeft, rayCastRight;
@@ -57,6 +58,9 @@ public class playerBehavior : MonoBehaviour
         gm = GameObject.Find("Game Manager");
         gb = gm.GetComponent<GlobalBehavior>();
         trail = GetComponent<TrailRenderer>();
+        snowBurst = GetComponentInChildren<ParticleSystem>();
+        smallSnow = GameObject.Find("Small_Snow");
+        largeSnow = GameObject.Find("Small_Snow");
 
         rayCastLeft = GameObject.Find("ray_cast_left").GetComponent<raycastUp>();
         rayCastRight = GameObject.Find("ray_cast_right").GetComponent<raycastUp>();
@@ -64,7 +68,7 @@ public class playerBehavior : MonoBehaviour
 
     void Update()
     {
-        velocity = mRB.velocity.magnitude;                    
+        velocity = mRB.velocity.magnitude;              
     }
 
     // Update is called once per frame
@@ -78,8 +82,13 @@ public class playerBehavior : MonoBehaviour
             if (isOnGround)
             {
                 previousGround = isOnGround;
+                snowBurst.enableEmission = true;
+                snowBurst.startSpeed = velocity/2;
             }
+            else
+                snowBurst.enableEmission = false;
 
+            //smallSnow.transform.RotateAround(smallSnow.transform.position, Vector3.up, -45);
 
             if (isOnGround && Input.GetAxis("Jump") > 0)
             {
