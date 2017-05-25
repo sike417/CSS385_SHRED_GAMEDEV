@@ -73,6 +73,6 @@ public class PlayerSounds : MonoBehaviour {
 
     public void Retry()
     {
-        hasCrashed = true;
+        hasCrashed = false;
     }
 }

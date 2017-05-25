@@ -44,10 +44,10 @@ public class CameraScript : MonoBehaviour
                 cam.orthographicSize -= zoomSmoothing;
             }
         }
-        if (Input.GetKey("z"))
-            cam.orthographicSize = 50;
-        if (Input.GetKey("v"))
-            cam.orthographicSize -= 1;
+//        if (Input.GetKey("z"))
+//            cam.orthographicSize = 50;
+//        if (Input.GetKey("v"))
+//            cam.orthographicSize -= 1;
 
 
     }

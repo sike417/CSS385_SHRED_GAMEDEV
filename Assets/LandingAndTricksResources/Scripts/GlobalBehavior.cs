@@ -29,7 +29,6 @@ public class GlobalBehavior : MonoBehaviour
     void Start()
     {
         //mSnowboarder = Instantiate(mSnowboarderClone, spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
-        crashSound = GetComponent<AudioSource>();
         UIDie.SetActive(false);
         UIWin.SetActive(false);
 
@@ -115,5 +114,10 @@ public class GlobalBehavior : MonoBehaviour
     public void UpdateBoostBar(float amount)
     {
         boostBar.value = amount;
+    }
+
+    public void ResetBoostBar()
+    {
+        boostBar.value = 2.5f;
     }
 }
