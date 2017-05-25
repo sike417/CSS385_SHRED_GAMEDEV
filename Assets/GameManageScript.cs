@@ -6,14 +6,19 @@ using UnityEngine.UI;
 
 public class GameManageScript : MonoBehaviour {
 
-    public Button btn;
+    public Button LevelOneButton;
+    public Button LevelTwoButton;
 
     // Use this for initialization
     void Start () {
-        btn.onClick.AddListener(() =>
+        LevelOneButton.onClick.AddListener(() =>
         {
-            Debug.Log("reached Here");
+//            Debug.Log("reached Here");
             SceneManager.LoadScene("Sample_Terrain");
+        });
+        LevelTwoButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene("level2");
         });
     }
 	
