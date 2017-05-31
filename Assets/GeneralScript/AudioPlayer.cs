@@ -32,11 +32,13 @@ public class AudioPlayer : MonoBehaviour {
 		    BGM.Play();
 		    playCount += 1;
 		}
+       else 
+        {
+            if (BGM.clip.length - BGM.time < 5f && playCount == 1)
+                FadeOut();
+        }
         FadeIn();
-
-        if (BGM.clip.length - BGM.time < 5f && playCount == 1)
-            FadeOut();
-	}
+    }
 
     AudioClip GetRandomClip(AudioClip lastPlayed)
     {
