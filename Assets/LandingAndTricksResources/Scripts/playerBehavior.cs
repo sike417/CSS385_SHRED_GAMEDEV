@@ -46,6 +46,9 @@ public class playerBehavior : MonoBehaviour
     public Transform headChecker;
     private float headCheckerRadius = 0.8f;
 
+    // animator
+    Animator animator;
+
     #endregion
 
     // Use this for initialization
@@ -64,6 +67,8 @@ public class playerBehavior : MonoBehaviour
 
         rayCastLeft = GameObject.Find("ray_cast_left").GetComponent<raycastUp>();
         rayCastRight = GameObject.Find("ray_cast_right").GetComponent<raycastUp>();
+
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -189,6 +194,9 @@ public class playerBehavior : MonoBehaviour
             {
                 CheckForTricks();
             }
+
+            animator.SetBool("Jumped", jumped);
+            animator.SetBool("IsOnGround", isOnGround);
         }
 
         if (HeroState == State.Crash)//Player Crash
