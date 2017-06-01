@@ -17,7 +17,7 @@ public class selectLevelScript : MonoBehaviour {
 
     void TaskOnClick()
     {
-        Debug.Log("reached");
+       // Debug.Log("reached");
         SceneManager.LoadScene("Sample_Terrain");
     }
 }
