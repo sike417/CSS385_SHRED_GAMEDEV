@@ -93,8 +93,6 @@ public class playerBehavior : MonoBehaviour
             else
                 snowBurst.enableEmission = false;
 
-            //smallSnow.transform.RotateAround(smallSnow.transform.position, Vector3.up, -45);
-
             if (isOnGround && Input.GetAxis("Jump") > 0)
             {
                 initRotation = mRB.rotation;
@@ -151,7 +149,6 @@ public class playerBehavior : MonoBehaviour
             if (!isOnGround && !isAboveRail)
             {
                 mRB.MoveRotation(mRB.rotation - Input.GetAxis("Horizontal") * rotationSpeed * Time.fixedDeltaTime);
-                // mRB.AddTorque(Input.GetAxis("Horizontal") * -rotationSpeed);  different rotation method feels different
             }
 
             // makes the players stay parallel to the ground
@@ -172,7 +169,7 @@ public class playerBehavior : MonoBehaviour
                 trickComplete = false;
             }
 
-            if (Input.GetKey("left shift"))
+            if (boost > 0 && Input.GetKey("left shift"))
             {
                 if (boost > 0)
                 {
