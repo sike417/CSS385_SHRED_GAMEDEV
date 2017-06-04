@@ -194,6 +194,7 @@ public class playerBehavior : MonoBehaviour
 
             animator.SetBool("Jumped", jumped);
             animator.SetBool("IsOnGround", isOnGround);
+            animator.SetBool("Grinding", attachedToRail);
         }
 
         if (HeroState == State.Crash)//Player Crash
@@ -359,7 +360,6 @@ public class playerBehavior : MonoBehaviour
     public void CrashPlayer()
     {
         HeroState = State.Crash;
-       
     }
     void CheckForTricks()
     {
@@ -410,7 +410,8 @@ public class playerBehavior : MonoBehaviour
         transform.position = initPos;
         mRB.velocity = new Vector2(0, 0);
         HeroState = State.Live;
-
+        boost = 2.5f;
+        trail.time = 0;
         mRB.rotation = 0f;
     }
     void LocalDestroy()
