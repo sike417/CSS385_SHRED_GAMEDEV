@@ -1,0 +1,12 @@
+﻿<Properties StartupItem="CSS385_SHRED_GAMEDEV.Plugins.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\LandingAndTricksResources\Scripts\raycastUp.cs">
+    <Files>
+      <File FileName="Assets\LandingAndTricksResources\Scripts\raycastUp.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

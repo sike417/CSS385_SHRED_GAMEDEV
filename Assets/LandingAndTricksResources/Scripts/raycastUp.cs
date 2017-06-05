@@ -27,6 +27,8 @@ public class raycastUp : MonoBehaviour {
             {
                 grindable = true;
                 gTransform = hit.transform;
+                //var rotation = hit.collider.gameObject.transform.right;
+//                railY = hit.collider.gameObject.GetComponent<BoxCollider2D>().
                 railY = hit.collider.gameObject.transform.position.y + hit.collider.gameObject.GetComponent<BoxCollider2D>().size.y/2;
             }
             else
